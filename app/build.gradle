@@ -1,0 +1,91 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+
+    buildToolsVersion rootProject.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.jairrab.capsl"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
+        testInstrumentationRunner "com.jairrab.myapp.test.TestRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    viewBinding.enabled = true
+
+    compileOptions {
+        sourceCompatibility = rootProject.javaSourceCompatibility
+        targetCompatibility = rootProject.javaTargetCompatibility
+    }
+
+    kotlinOptions {
+        jvmTarget = rootProject.jvmTarget
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation kotlinLibrary.kotlinLib
+    implementation kotlinLibrary.coreKtx
+    implementation googleLibrary.materialLibrary
+
+    implementation androidLibrary.appCompat
+    implementation androidLibrary.cardView
+    implementation androidLibrary.constraintLayout
+    implementation androidLibrary.navigationFragment
+    implementation androidLibrary.navigationUi
+    implementation androidLibrary.preferencesKtx
+    implementation androidLibrary.swipeRefreshLayout
+    implementation androidLibrary.lifecycle
+    implementation androidLibrary.lifecycleExtensions
+    implementation androidLibrary.lifecycle_java_8
+
+    implementation frameworkLibrary.dagger
+    kapt frameworkLibrary.daggerProcessor
+    kapt frameworkLibrary.daggerCompiler
+
+    testImplementation testLibrary.jUnit
+
+    androidTestImplementation testLibrary.androidxTestRunner
+    androidTestImplementation testLibrary.androidxTestRules
+    androidTestImplementation testLibrary.espresso
+    androidTestImplementation testLibrary.espressoContrib
+    androidTestImplementation testLibrary.mockitoKotlin
+    androidTestImplementation testLibrary.mockitoAndroid
+
+    kaptTest frameworkLibrary.daggerCompiler
+    kaptAndroidTest frameworkLibrary.daggerCompiler
+
+    implementation kotlinLibrary.coroutinesPlayServices
+
+    implementation libraries.glide
+    annotationProcessor libraries.glideAnnotation
+
+    implementation androidLibrary.roomKtx
+    kapt androidLibrary.roomCompiler
+
+    implementation 'com.google.firebase:firebase-analytics:17.2.3'
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
+
+    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
+    implementation 'com.google.firebase:firebase-firestore:21.4.1'
+}

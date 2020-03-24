@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "824227961571",
+    "firebase_url": "https://capsl-7eaa9.firebaseio.com",
+    "project_id": "capsl-7eaa9",
+    "storage_bucket": "capsl-7eaa9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824227961571:android:0c622ae6eb7b6875c1c3d6",
+        "android_client_info": {
+          "package_name": "com.jairrab.capsl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824227961571-j4skl1kltr8a9rd3l6tm2ole5v5if843.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jairrab.capsl",
+            "certificate_hash": "9818328efa9e9dc0e312ddfd28a95784ec3fc0ce"
+          }
+        },
+        {
+          "client_id": "824227961571-moe6hb68va1ci07mmmtgopossuks8kfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-CJuNpi9cgUADb8NuzBu3KOX_o-JdvQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824227961571-moe6hb68va1ci07mmmtgopossuks8kfl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
