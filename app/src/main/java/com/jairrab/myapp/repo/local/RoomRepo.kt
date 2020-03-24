@@ -22,9 +22,14 @@ class RoomRepo @Inject constructor(
             ?.map { mapper.mapToPost(it) }
     }
 
-    override suspend fun getData(user: String): List<Post>? {
-        return database.appDao.getData(user)
-            ?.map { mapper.mapToPost(it) }
+    override suspend fun getData(user: String, publicOnly: Boolean): List<Post>? {
+        return if (publicOnly) {
+            database.appDao.getData(user, true)
+                ?.map { mapper.mapToPost(it) }
+        } else {
+            database.appDao.getData(user)
+                ?.map { mapper.mapToPost(it) }
+        }
     }
 
     override suspend fun deleteData(post: Post) {

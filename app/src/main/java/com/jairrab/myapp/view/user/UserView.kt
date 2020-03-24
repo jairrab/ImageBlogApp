@@ -68,7 +68,7 @@ class UserView : Fragment(R.layout.view_user) {
         }
 
         binding.postBn.run {
-            showView(FirebaseAuth.getInstance().currentUser?.isAnonymous == false)
+            showView(!isAnonymous)
             setOnClickListener {
                 if (binding.progressCircular.visibility == VISIBLE) {
                     toaster.showToast("Please wait for task to complete...")
@@ -99,18 +99,24 @@ class UserView : Fragment(R.layout.view_user) {
         activityViewModel.currentUser?.let { user ->
             binding.progressCircular.showView(true)
 
-            withContext(Dispatchers.Default) { localRepo.getData(user) }?.let { data ->
+            withContext(Dispatchers.Default) { localRepo.getData(user, isAnonymous) }?.let { data ->
                 listAdapter?.isLoggedInUser = isLoggedInUser()
                 listAdapter?.submitList(data)
             }
 
-            remoteRepo.getData(user)?.let { data ->
+            remoteRepo.getData(user, isAnonymous)?.let { data ->
                 binding.progressCircular.showView(false)
                 listAdapter?.isLoggedInUser = isLoggedInUser()
                 listAdapter?.submitList(data)
-            }
+            } ?: binding.progressCircular.showView(false)
         }
     }
 
-    private fun isLoggedInUser() = activityViewModel.loggedInUser == activityViewModel.currentUser
+    private fun isLoggedInUser(): Boolean {
+        return activityViewModel.loggedInUser == activityViewModel.currentUser
+               && !isAnonymous
+    }
+
+    private val isAnonymous
+        get() = FirebaseAuth.getInstance().currentUser?.isAnonymous == true
 }

@@ -61,7 +61,7 @@ class HomeView : Fragment(R.layout.view_home) {
         }
 
         binding.postBn.run {
-            showView(FirebaseAuth.getInstance().currentUser?.isAnonymous == false)
+            showView(!isAnonymous)
             setOnClickListener {
                 if (binding.progressCircular.visibility == View.VISIBLE) {
                     toaster.showToast("Please wait for task to complete...")
@@ -131,4 +131,7 @@ class HomeView : Fragment(R.layout.view_home) {
             }
         }
     }
+
+    private val isAnonymous
+        get() = FirebaseAuth.getInstance().currentUser?.isAnonymous == true
 }

@@ -83,8 +83,9 @@ class FirebaseSource @Inject constructor(
             .await()
     }
 
-    override suspend fun getData(user: String): List<Post>? {
+    override suspend fun getData(user: String, publicOnly: Boolean): List<Post>? {
         return FirebaseFirestore.getInstance().collection("posts")
+            .let { if (publicOnly) it.whereEqualTo("publicVisibility", true) else it }
             .whereEqualTo("user", user)
             .get()
             .await()
