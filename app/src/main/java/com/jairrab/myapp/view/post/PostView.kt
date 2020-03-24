@@ -1,6 +1,7 @@
 package com.jairrab.myapp.view.post
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -8,6 +9,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.jairrab.myapp.MyApp
 import com.jairrab.myapp.R
 import com.jairrab.myapp.databinding.ViewPostBinding
@@ -15,6 +20,7 @@ import com.jairrab.myapp.repo.LocalRepo
 import com.jairrab.myapp.repo.RemoteRepo
 import com.jairrab.myapp.utils.TimeUtils
 import com.jairrab.myapp.utils.Toaster
+import com.jairrab.myapp.utils.showView
 import com.jairrab.myapp.utils.viewBinding
 import com.jairrab.myapp.view.main.viewmodel.ActivityViewModel
 import kotlinx.coroutines.launch
@@ -56,11 +62,39 @@ class PostView : Fragment(R.layout.view_post) {
             setOnClickListener { findNavController().navigate(R.id.userView) }
         }
 
+        loadImage()
+    }
+
+    private fun loadImage() {
         coroutineScope.launch {
             currentPost?.let {
+                binding.progressCircular.showView(true)
                 val image = remoteRepo.getImage(it)
                 Glide.with(binding.postIv.context)
                     .load(image)
+                    .addListener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            binding.progressCircular.showView(false)
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            binding.progressCircular.showView(false)
+                            return false
+                        }
+
+                    })
                     .into(binding.postIv)
             }
         }

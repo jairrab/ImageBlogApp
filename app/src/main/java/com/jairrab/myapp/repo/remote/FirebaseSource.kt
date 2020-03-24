@@ -62,7 +62,7 @@ class FirebaseSource @Inject constructor(
 
     override suspend fun getImage(post: Post): File {
         val file = fileUtil.getCacheFile(post)
-        if (!file.exists()) {
+        if (!file.exists() || file.length() == 0L) {
             FirebaseStorage.getInstance().reference
                 .child("${post.user}/${post.id}")
                 .getFile(file)
