@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.jairrab.myapp.MyApp
 import com.jairrab.myapp.R
 import com.jairrab.myapp.databinding.ViewUserBinding
@@ -66,17 +67,20 @@ class UserView : Fragment(R.layout.view_user) {
             }
         }
 
-        binding.postBn.setOnClickListener {
-            if (binding.progressCircular.visibility == VISIBLE) {
-                toaster.showToast("Please wait for task to complete...")
-                return@setOnClickListener
+        binding.postBn.run {
+            showView(FirebaseAuth.getInstance().currentUser?.isAnonymous == false)
+            setOnClickListener {
+                if (binding.progressCircular.visibility == VISIBLE) {
+                    toaster.showToast("Please wait for task to complete...")
+                    return@setOnClickListener
+                }
+                binding.progressCircular.showView(true)
+                fileUtil.pickFile(
+                    fragment = this@UserView,
+                    requestCode = pickFileRequest,
+                    mimeType = MimeType.IMAGES
+                )
             }
-            binding.progressCircular.showView(true)
-            fileUtil.pickFile(
-                fragment = this,
-                requestCode = pickFileRequest,
-                mimeType = MimeType.IMAGES
-            )
         }
 
         binding.homeBn.setOnClickListener {

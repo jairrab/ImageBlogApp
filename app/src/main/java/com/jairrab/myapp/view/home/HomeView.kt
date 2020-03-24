@@ -18,7 +18,6 @@ import com.jairrab.myapp.models.Post
 import com.jairrab.myapp.repo.LocalRepo
 import com.jairrab.myapp.repo.RemoteRepo
 import com.jairrab.myapp.utils.*
-import com.jairrab.myapp.utils.UriUtil
 import com.jairrab.myapp.view.main.viewmodel.ActivityViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,17 +60,20 @@ class HomeView : Fragment(R.layout.view_home) {
             }
         }
 
-        binding.postBn.setOnClickListener {
-            if (binding.progressCircular.visibility == View.VISIBLE) {
-                toaster.showToast("Please wait for task to complete...")
-                return@setOnClickListener
+        binding.postBn.run {
+            showView(FirebaseAuth.getInstance().currentUser?.isAnonymous == false)
+            setOnClickListener {
+                if (binding.progressCircular.visibility == View.VISIBLE) {
+                    toaster.showToast("Please wait for task to complete...")
+                    return@setOnClickListener
+                }
+                binding.progressCircular.showView(true)
+                fileUtil.pickFile(
+                    fragment = this@HomeView,
+                    requestCode = pickFileRequest,
+                    mimeType = MimeType.IMAGES
+                )
             }
-            binding.progressCircular.showView(true)
-            fileUtil.pickFile(
-                fragment = this,
-                requestCode = pickFileRequest,
-                mimeType = MimeType.IMAGES
-            )
         }
 
         binding.logoutBn.setOnClickListener {

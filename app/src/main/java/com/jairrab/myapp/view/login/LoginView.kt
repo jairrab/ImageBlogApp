@@ -8,18 +8,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.AuthUI.IdpConfig.GoogleBuilder
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.jairrab.myapp.MyApp
 import com.jairrab.myapp.R
 import com.jairrab.myapp.databinding.ViewLoginBinding
+import com.jairrab.myapp.utils.Toaster
+import com.jairrab.myapp.utils.showView
 import com.jairrab.myapp.utils.viewBinding
 import com.jairrab.myapp.view.main.viewmodel.ActivityViewModel
+import javax.inject.Inject
 
 class LoginView : Fragment(R.layout.view_login) {
 
+    @Inject lateinit var toaster: Toaster
+
     private val activityViewModel by activityViewModels<ActivityViewModel>()
     private val binding by viewBinding { ViewLoginBinding.bind(it) }
+    private val loginRequest = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,17 +37,27 @@ class LoginView : Fragment(R.layout.view_login) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.signInBn.setOnClickListener {
-            val providers = arrayListOf(
-                AuthUI.IdpConfig.GoogleBuilder().build()
-            )
-
+            binding.progressCircular.showView(true)
             startActivityForResult(
                 AuthUI.getInstance()
                     .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
+                    .setAvailableProviders(arrayListOf(GoogleBuilder().build()))
                     .build(),
-                123
+                loginRequest
             )
+        }
+
+        binding.useAppAnonymouslyBn.setOnClickListener {
+            binding.progressCircular.showView(true)
+            FirebaseAuth.getInstance().signInAnonymously()
+                .addOnCompleteListener { task ->
+                    binding.progressCircular.showView(false)
+                    if (task.isSuccessful) {
+                        signInUser()
+                    } else {
+                        toaster.showToast("Failed to login anonymously")
+                    }
+                }
         }
     }
 
@@ -48,13 +65,16 @@ class LoginView : Fragment(R.layout.view_login) {
         super.onStart()
         // Check if user is signed in (non-null)
         FirebaseAuth.getInstance().currentUser?.let {
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user?.isAnonymous == true) return
             signInUser()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 123) {
+        if (requestCode == loginRequest) {
+            binding.progressCircular.showView(true)
             if (resultCode == Activity.RESULT_OK) {
                 signInUser()
             } else {
