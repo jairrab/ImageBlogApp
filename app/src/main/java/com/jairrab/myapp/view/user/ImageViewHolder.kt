@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.jairrab.myapp.R
 import com.jairrab.myapp.databinding.ViewUserFeedItemBinding
 import com.jairrab.myapp.models.Post
+import com.jairrab.myapp.models.UserAction
 import com.jairrab.myapp.repo.RemoteRepo
 import com.jairrab.myapp.utils.showView
 
@@ -26,6 +27,9 @@ class ImageViewHolder(
         }
         binding.deleteIv.setOnClickListener {
             callback(UserAction.DeletePost(item))
+        }
+        binding.imageView.setOnClickListener {
+            callback(UserAction.ViewImage(item))
         }
     }
 

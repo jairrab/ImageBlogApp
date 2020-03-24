@@ -15,6 +15,8 @@ import com.jairrab.myapp.MyApp
 import com.jairrab.myapp.R
 import com.jairrab.myapp.databinding.ViewHomeBinding
 import com.jairrab.myapp.models.Post
+import com.jairrab.myapp.models.UserAction.ViewImage
+import com.jairrab.myapp.models.UserAction.ViewUser
 import com.jairrab.myapp.repo.LocalRepo
 import com.jairrab.myapp.repo.RemoteRepo
 import com.jairrab.myapp.utils.*
@@ -52,8 +54,16 @@ class HomeView : Fragment(R.layout.view_home) {
                 setHasFixedSize(true)
                 layoutManager = GridLayoutManager(requireContext(), 2)
                 listAdapter = HomeFeedAdapter(coroutineScope, remoteRepo) {
-                    activityViewModel.currentUser = it.user
-                    findNavController().navigate(R.id.userView)
+                    when (it) {
+                        is ViewImage -> {
+                            activityViewModel.currentPost = it.post
+                            findNavController().navigate(R.id.postView)
+                        }
+                        is ViewUser  -> {
+                            activityViewModel.currentUser = it.post.user
+                            findNavController().navigate(R.id.userView)
+                        }
+                    }
                 }
                 adapter = listAdapter
                 updateFeed()

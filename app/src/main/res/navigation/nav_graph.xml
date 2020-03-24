@@ -22,6 +22,11 @@
         android:label="UserView">
     </fragment>
 
+    <fragment
+        android:id="@+id/postView"
+        android:name="com.jairrab.myapp.view.post.PostView"
+        android:label="PostView">
+    </fragment>
 
 
 </navigation>

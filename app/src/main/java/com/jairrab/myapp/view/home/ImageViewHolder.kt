@@ -5,13 +5,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jairrab.myapp.databinding.ViewFeedItemBinding
 import com.jairrab.myapp.models.Post
+import com.jairrab.myapp.models.UserAction
 import com.jairrab.myapp.repo.RemoteRepo
 
 class ImageViewHolder(
     private val colors: Array<Int>,
     private val remoteRepo: RemoteRepo,
     private val binding: ViewFeedItemBinding,
-    private val callback: (Post) -> Unit
+    private val callback: (UserAction) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private val context get() = binding.root.context
@@ -19,7 +20,10 @@ class ImageViewHolder(
 
     init {
         binding.userTv.setOnClickListener {
-            item?.let { callback(it) }
+            item?.let { callback(UserAction.ViewUser(it)) }
+        }
+        binding.imageView.setOnClickListener {
+            item?.let { callback(UserAction.ViewImage(it)) }
         }
     }
 

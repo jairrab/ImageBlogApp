@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.jairrab.myapp.R
 import com.jairrab.myapp.databinding.ViewFeedItemBinding
 import com.jairrab.myapp.models.Post
+import com.jairrab.myapp.models.UserAction
 import com.jairrab.myapp.repo.RemoteRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 class HomeFeedAdapter(
     private val coroutineScope: CoroutineScope,
     private val remoteRepo: RemoteRepo,
-    private val callback: (Post) -> Unit
+    private val callback: (UserAction) -> Unit
 ) : ListAdapter<Post, ImageViewHolder>(A) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {

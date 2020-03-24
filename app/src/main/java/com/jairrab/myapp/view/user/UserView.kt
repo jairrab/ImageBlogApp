@@ -14,12 +14,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.jairrab.myapp.MyApp
 import com.jairrab.myapp.R
 import com.jairrab.myapp.databinding.ViewUserBinding
+import com.jairrab.myapp.models.UserAction.*
 import com.jairrab.myapp.repo.LocalRepo
 import com.jairrab.myapp.repo.RemoteRepo
 import com.jairrab.myapp.utils.*
 import com.jairrab.myapp.view.main.viewmodel.ActivityViewModel
-import com.jairrab.myapp.view.user.UserAction.ChangePublicVisibility
-import com.jairrab.myapp.view.user.UserAction.DeletePost
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -58,6 +57,11 @@ class UserView : Fragment(R.layout.view_user) {
                         when (it) {
                             is ChangePublicVisibility -> activityViewModel.updateData(it.post)
                             is DeletePost             -> activityViewModel.deleteData(it.post)
+                            is ViewImage              -> {
+                                activityViewModel.currentPost = it.post
+                                findNavController().popBackStack(R.id.userView, true)
+                                findNavController().navigate(R.id.postView)
+                            }
                         }
                         updateFeed()
                     }

@@ -17,6 +17,7 @@ class ActivityViewModel @Inject constructor(
 
     var loggedInUser: String? = null
     var currentUser: String? = null
+    var currentPost: Post? = null
 
     fun start() {
         //add startup routines and initializations

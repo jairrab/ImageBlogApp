@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.jairrab.myapp.databinding.ViewUserFeedItemBinding
 import com.jairrab.myapp.models.Post
+import com.jairrab.myapp.models.UserAction
 import com.jairrab.myapp.repo.RemoteRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
