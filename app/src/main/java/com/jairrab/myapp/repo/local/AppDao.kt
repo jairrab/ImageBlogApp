@@ -33,6 +33,15 @@ abstract class AppDao {
     )
     abstract fun getData(user: String): List<CachedPost>?
 
+    @Query(
+        """
+        SELECT * FROM POSTS_TABLE 
+        WHERE user = :user AND publicVisibility = :publicOnly
+        ORDER BY date DESC
+        """
+    )
+    abstract fun getData(user: String, publicOnly: Boolean): List<CachedPost>?
+
     @Delete
     abstract fun deleteData(cachedPost: CachedPost)
 }
