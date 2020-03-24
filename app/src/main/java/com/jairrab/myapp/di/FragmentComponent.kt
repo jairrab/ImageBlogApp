@@ -11,6 +11,7 @@ import com.jairrab.myapp.di.module.ActivityModule
 import com.jairrab.myapp.di.scope.ActivityScope
 import com.jairrab.myapp.view.home.HomeView
 import com.jairrab.myapp.view.login.LoginView
+import com.jairrab.myapp.view.post.PostView
 import com.jairrab.myapp.view.user.UserView
 import dagger.Component
 
@@ -25,4 +26,5 @@ interface FragmentComponent {
     fun inject(view: LoginView)
     fun inject(view: HomeView)
     fun inject(view: UserView)
+    fun inject(view: PostView)
 }

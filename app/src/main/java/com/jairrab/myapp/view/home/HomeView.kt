@@ -121,14 +121,12 @@ class HomeView : Fragment(R.layout.view_home) {
             binding.progressCircular.showView(false)
             listAdapter?.submitList(data)
             cacheData(data)
-        }
+        } ?: binding.progressCircular.showView(false)
     }
 
     private suspend fun cacheData(data: List<Post>) {
         withContext(Dispatchers.Default) {
-            data.forEach {
-                localRepo.saveData(it)
-            }
+            data.forEach { localRepo.saveData(it) }
         }
     }
 }
