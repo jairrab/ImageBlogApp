@@ -138,8 +138,12 @@ class HomeView : Fragment(R.layout.view_home) {
     }
 
     private suspend fun cacheData(data: List<Post>) {
-        withContext(Dispatchers.Default) {
-            data.forEach { localRepo.saveData(it) }
+        withContext(Dispatchers.Default) { localRepo.getData(true) }?.let { cache ->
+            withContext(Dispatchers.Default) {
+                cache.filter { c -> !data.map { it.id }.contains(c.id) }
+                    .forEach { localRepo.deleteData(it) }
+                data.forEach { localRepo.saveData(it) }
+            }
         }
     }
 
