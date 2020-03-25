@@ -87,11 +87,14 @@ class HomeView : Fragment(R.layout.view_home) {
         }
 
         binding.logoutBn.setOnClickListener {
-            toaster.showToast("Logging out...")
-            FirebaseAuth.getInstance().signOut()
-            context?.cacheDir?.deleteRecursively()
-            findNavController().popBackStack(R.id.homeView, true)
-            findNavController().navigate(R.id.loginView)
+            coroutineScope.launch {
+                toaster.showToast("Logging out...")
+                FirebaseAuth.getInstance().signOut()
+                withContext(Dispatchers.Default) { localRepo.nukeTable() }
+                context?.cacheDir?.deleteRecursively()
+                findNavController().popBackStack(R.id.homeView, true)
+                findNavController().navigate(R.id.loginView)
+            }
         }
     }
 

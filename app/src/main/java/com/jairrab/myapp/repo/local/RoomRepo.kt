@@ -9,6 +9,10 @@ class RoomRepo @Inject constructor(
     private val mapper: Mapper
 ) : LocalRepo {
 
+    override suspend fun nukeTable() {
+        database.appDao.nukeTable()
+    }
+
     override suspend fun saveData(post: Post) {
         database.appDao.saveData(mapper.mapToCachedPost(post))
     }

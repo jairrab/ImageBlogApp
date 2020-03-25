@@ -12,6 +12,9 @@ import androidx.room.*
 @Dao
 abstract class AppDao {
 
+    @Query("DELETE FROM POSTS_TABLE")
+    abstract fun nukeTable()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun saveData(cachedPost: CachedPost)
 
